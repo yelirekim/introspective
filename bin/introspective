@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+require_once dirname(__FILE__).'/__init_script__.php';
+
+use Yelirekim\Introspective\Console;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->add(new Console\Complete);
+$application->add(new Console\Introspect);
+$application->run();

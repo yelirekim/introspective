@@ -1,0 +1,20 @@
+{
+    "name": "yelirekim/introspective",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Riley",
+            "email": "mikeriley@yelirekim.com"
+        }
+    ],
+    "require": {
+        "nette/reflection": "2.3.*",
+        "symfony/console": "~2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yelirekim\\Introspective\\": "src/"
+        }
+    }
+}
