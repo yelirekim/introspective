@@ -2,3 +2,17 @@
 <?php
 
 require_once dirname(__FILE__).'/__init_script__.php';
+
+use Symfony\Component\Console;
+
+$buffer = file_get_contents('php://stdin');
+if (empty($buffer)) {
+    throw new \Exception(sprintf(
+        'You must provide the contents of a text buffer via stdin in order to '.
+        "use this command. For example:\n\t\$ %s < path/to/file.php", __FILE__));
+}
+
+$command = new Yelirekim\Introspective\Console\Complete;
+array_push($argv, sprintf('--buffer=%s', $buffer));
+$input = new Console\Input\ArgvInput($argv);
+$command->run($input, new Console\Output\ConsoleOutput);
