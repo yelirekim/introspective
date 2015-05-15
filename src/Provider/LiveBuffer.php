@@ -14,6 +14,7 @@ class LiveBuffer extends Provider
     private $statements = null;
     private $classNodes = null;
     private $namespace = null;
+    private $lines;
 
     public function __construct($buffer, PhpParser\Lexer $lexer = null)
     {
@@ -21,6 +22,12 @@ class LiveBuffer extends Provider
         $this->parser = new PhpParser\Parser($lexer ?: new PhpParser\Lexer\Emulative, [
             'throwOnError' => false,
         ]);
+        $this->lines = explode(PHP_EOL, $buffer);
+    }
+
+    public function getRow($index)
+    {
+        return isset($this->lines[--$index]) ? $this->lines[$index] : null;
     }
 
     public function parse()
@@ -43,10 +50,14 @@ class LiveBuffer extends Provider
         return $this->statements;
     }
 
-    private function classNode($classname)
+    private function classNodes($classname = null)
     {
         if($this->classNodes === null) {
             $this->findClassNodes();
+        }
+
+        if($classname === null) {
+            return $this->classNodes;
         }
 
         $classname = $this->normalizeClassname($classname);
@@ -54,9 +65,21 @@ class LiveBuffer extends Provider
         return isset($this->classNodes[$classname]) ? $this->classNodes[$classname] : null;
     }
 
+    public function getEnclosingClassname($cursorRow, $cursorColumn)
+    {
+        foreach($this->classNodes() as $classname => $node) {
+            $attributes = $node->getAttributes();
+            if($cursorRow > $attributes['startLine'] && $cursorRow < $attributes['endLine']) {
+                return $classname;
+            }
+        }
+
+        return null;
+    }
+
     public function getClass($classname)
     {
-        if(($node = $this->classNode($classname))) {
+        if(($node = $this->classNodes($classname))) {
             return (new Definition\Hydrator\PhpParserHydrator)->class_($node);
         }
 
@@ -65,7 +88,7 @@ class LiveBuffer extends Provider
 
     public function hasClass($classname)
     {
-        return $this->classNode($classname) !== null;
+        return $this->classNodes($classname) !== null;
     }
 
     private function findClassNodes()
@@ -105,6 +128,7 @@ class LiveBuffer extends Provider
     {
         $callback->bindTo($this);
         $traverser = new PhpParser\NodeTraverser;
+        $traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver);
         $traverser->addVisitor(Traversal\ClosureNodeVisitor::leave($callback));
         $traverser->traverse($this->statements());
     }

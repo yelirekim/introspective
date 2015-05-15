@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yelirekim\Introspective\Provider\LiveBuffer;
+use Yelirekim\Introspective\Completer;
 
 class Complete extends Command
 {
@@ -37,6 +37,10 @@ class Complete extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $buffer = new LiveBuffer($input->getOption('buffer'));
+        Completer::suggest(
+            $input->getOption('buffer'),
+            $input->getArgument('cursor-row'),
+            $input->getArgument('cursor-column')
+        );
     }
 }

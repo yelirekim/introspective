@@ -11,6 +11,9 @@ class PhpParserHydrator
     {
         $class = new Definition\Class_;
         $class->name = $node->name;
+        $namespaceParts = $node->namespacedName->parts;
+        array_pop($namespaceParts);
+        $class->namespace = implode('\\', $namespaceParts);
         foreach ($node->getMethods() as $methodNode) {
             $class->methods[] = $this->method($methodNode);
         }
@@ -34,6 +37,7 @@ class PhpParserHydrator
         } elseif($node->isPrivate()) {
             $method->visibility = 'private';
         }
+        $method->static = $node->isStatic();
         foreach ($node->params as $parameterNode) {
             $method->parameters[] = $this->parameter($parameterNode);
         }
@@ -56,6 +60,7 @@ class PhpParserHydrator
         } elseif($node->isPrivate()) {
             $property->visibility = 'private';
         }
+        $property->static = $node->isStatic();
         return $property;
     }
 }

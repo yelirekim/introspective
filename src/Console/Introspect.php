@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Yelirekim\Introspective\Introspector;
 
 class Introspect extends Command
 {
@@ -25,5 +26,6 @@ class Introspect extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln(json_encode(Introspector::reflect($input->getArgument('classname'))));
     }
 }

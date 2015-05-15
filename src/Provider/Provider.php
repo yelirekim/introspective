@@ -11,10 +11,6 @@ abstract class Provider
 
     protected function normalizeClassname($classname)
     {
-        if(!Utils\Strings::startsWith($classname, '\\')) {
-            return '\\' . $classname;
-        }
-
-        return $classname;
+        return ltrim($classname, '\\');
     }
 }
