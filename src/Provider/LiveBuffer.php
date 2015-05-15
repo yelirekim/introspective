@@ -5,7 +5,6 @@ namespace Yelirekim\Introspective\Provider;
 use PhpParser;
 use Closure;
 use Yelirekim\Introspective\Definition;
-use Nette\Utils;
 
 class LiveBuffer extends Provider
 {

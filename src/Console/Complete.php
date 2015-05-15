@@ -37,10 +37,11 @@ class Complete extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        Completer::suggest(
+        $output->writeln(json_encode(Completer::suggest(
+            'atom',
             $input->getOption('buffer'),
             $input->getArgument('cursor-row'),
             $input->getArgument('cursor-column')
-        );
+        )));
     }
 }

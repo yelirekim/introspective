@@ -3,22 +3,13 @@
 namespace Yelirekim\Introspective\Definition;
 
 use Closure;
+use Yelirekim\Introspective\Util;
 
 abstract class Definition implements \JsonSerializable
 {
-    public $name = '';
+    use Util\JsonSerializesPublicProperties;
 
-    public function jsonSerialize()
-    {
-        $rval = [];
-        foreach((new \ReflectionClass($this))
-            ->getProperties(\ReflectionProperty::IS_PUBLIC)
-        as $property) {
-            $name = $property->getName();
-            $rval[$name] = $this->$name;
-        }
-        return $rval;
-    }
+    public $name = '';
 
     public function filterProperty($name, Closure $callback)
     {

@@ -9,7 +9,6 @@
         }
     ],
     "require": {
-        "nette/reflection": "~2.3",
         "symfony/console": "~2.6",
         "nikic/php-parser": "~1.3"
     },
