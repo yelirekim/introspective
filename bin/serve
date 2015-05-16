@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+require_once dirname(__FILE__).'/__init_script__.php';
+
+use Symfony\Component\Console;
+
+(new Yelirekim\Introspective\Console\Serve)
+    ->run(new Console\Input\ArgvInput, new Console\Output\ConsoleOutput);

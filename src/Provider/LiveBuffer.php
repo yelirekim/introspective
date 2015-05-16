@@ -18,7 +18,17 @@ class LiveBuffer extends Provider
     public function __construct($buffer, PhpParser\Lexer $lexer = null)
     {
         $this->buffer = $buffer;
-        $this->parser = new PhpParser\Parser($lexer ?: new PhpParser\Lexer\Emulative, [
+        $this->parser = new PhpParser\Parser($lexer ?: new PhpParser\Lexer\Emulative([
+            'usedAttributes' => [
+                'comments',
+                'startLine',
+                'endLine',
+                'startTokenPos',
+                'endTokenPos',
+                'startFilePos', 
+                'endFilePos',
+            ],
+        ]), [
             'throwOnError' => false,
         ]);
         $this->lines = explode(PHP_EOL, $buffer);

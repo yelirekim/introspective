@@ -5,9 +5,18 @@ namespace Yelirekim\Introspective\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log;
 
 class Command extends \Symfony\Component\Console\Command\Command
 {
+    protected $logger;
+
+    public function __construct($name = null, Log\LoggerInterface $logger = null)
+    {
+        parent::__construct($name);
+        $this->logger = $logger ? $logger : new Log\NullLogger;
+    }
+
     protected function configure()
     {
         $this

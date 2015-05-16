@@ -17,19 +17,28 @@ class Complete extends Command
             ->setName('introspective:complete')
             ->setDescription('Provide a list of strings suitable for completion in a text editor.')
             ->addOption(
-               'buffer',
-               null,
-               InputOption::VALUE_REQUIRED,
-               'Contents of a text buffer to provide suggestions for.'
+                'format',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Format for the suggestions, currently only \'atom\' is supported.',
+                'atom'
             )
-            ->addArgument(
-                'cursor-row',
-                InputArgument::REQUIRED,
+            ->addOption(
+                'buffer',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Contents of a text buffer to provide suggestions for.'
+            )
+            ->addOption(
+                'row',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'Cursor row in the supplied buffer.'
             )
-            ->addArgument(
-                'cursor-column',
-                InputArgument::REQUIRED,
+            ->addOption(
+                'column',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'Cursor column in the supplied buffer.'
             )
         ;
@@ -38,10 +47,10 @@ class Complete extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln(json_encode(Completer::suggest(
-            'atom',
+            $input->getOption('format'),
             $input->getOption('buffer'),
-            $input->getArgument('cursor-row'),
-            $input->getArgument('cursor-column')
+            $input->getOption('row'),
+            $input->getOption('column')
         )));
     }
 }
