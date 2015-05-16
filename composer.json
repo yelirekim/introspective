@@ -17,5 +17,11 @@
         "psr-4": {
             "Yelirekim\\Introspective\\": "src/"
         }
-    }
+    },
+    "bin": [
+        "bin/complete",
+        "bin/introspect",
+        "bin/introspective",
+        "bin/serve"
+    ]
 }
